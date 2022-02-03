@@ -18,12 +18,14 @@ import pandas as pd
 MY_ID = os.environ["MY_ID"]
 MY_PW = os.environ["MY_PW"]
 
+CHROME_DRIVER_PATH = os.environ["CHROME_DRIVER_PATH"]
+
 def set_driver():
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument('--disable-dev-shm-usage')
     chrome_options.add_argument('--headless')
-    service = Service('../chromedriver')
+    service = Service(CHROME_DRIVER_PATH)
     driver = webdriver.Chrome(service=service, options=chrome_options)
 
     return driver
@@ -88,7 +90,7 @@ def main(building):
     today = datetime.datetime.now()
     is_monday = today.weekday() == 0
 
-    if is_monday:
+    if True:
 
         driver = set_driver()
 
@@ -125,7 +127,11 @@ def main(building):
             menu_df.columns = [t[0] + "_" + str(current_year) + t[1] for t in tmp]
 
             monday = today - datetime.timedelta(days=today.weekday())
-            menu_df.to_csv(f"storage/twin_menu_{building}_{monday.strftime('%Y%m%d')}.csv", encoding="UTF-8")
+
+            if not os.path.exists("./storage"):
+                os.makedirs("./storage")
+                
+            menu_df.to_csv(f"./storage/twin_menu_{building}_{monday.strftime('%Y%m%d')}.csv", encoding="UTF-8")
         
         except Exception as e:
             raise e
