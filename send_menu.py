@@ -41,6 +41,10 @@ def main(building="west", target_date=None):
 
         # Activity Elements
         myMessageSection.activityTitle(f"오늘의 메뉴 ({building_kor})")
+        if building == "west":
+            myMessageSection.activityImage("https://img.icons8.com/office/452/west.png")
+        else:
+            myMessageSection.activityImage("https://img.icons8.com/office/452/east.png")
 
         # Facts are key value pairs displayed in a list.
         for section_name in today_menu.index:
